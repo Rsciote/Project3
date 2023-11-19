@@ -33,7 +33,7 @@ export class TvApp extends LitElement {
       css`
       :host {
         display: block;
-        margin: 16px;
+        margin: 32px;
         padding: 16px;
       }
       .grid-container 
@@ -46,9 +46,9 @@ export class TvApp extends LitElement {
       }
       .grid-item1
       {
-          height: 357px;
-          width: 500px;
-          border: 1px solid rgba(0, 0, 0, 0.8);
+          height: 450px;
+          width: 600px;
+          border: 4px solid rgba(0, 0, 0, 0.8);
           background-color: grey;
       }
       .grid-item2
@@ -56,7 +56,7 @@ export class TvApp extends LitElement {
           height: 700px;
           width: 400px;
           border: 1px solid rgba(0, 0, 0, 0.8);
-          background-color: grey;
+          background-color: beige;
         }
       `
     ];
@@ -66,7 +66,7 @@ export class TvApp extends LitElement {
     return html `
      <div class="grid-container">
     <div class="grid-item1"><video-player source= 
-    "https://www.youtube.com/watch?v=zLAYGZeVTPQ"></video-player></div>
+    "https://www.youtube.com/watch?v=rrc0Y3JMk6Q"></video-player></div>
     <div class="grid-item2">
     </div>
       </div>
