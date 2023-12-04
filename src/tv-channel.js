@@ -16,7 +16,8 @@ export class TvChannel extends LitElement {
   static get properties() {
     return {
       title: { type: String },
-      presenter: { type: String },
+      description:{type: String},
+      timecode:{type: String},
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -28,17 +29,24 @@ export class TvChannel extends LitElement {
       .wrapper {
         padding: 16px;
         background-color: #eeeeee;
+        width: 350px;
+        height: 150px;
+        background-color: white;
+        font-size: 18px;
+        text-align: center;
+        margin-bottom: 5px;
+        font-family: 'Open Sans', sans-serif;
       }
     `;
   }
   // LitElement rendering template of your element
   render() {
     return html`
-      <!-- <div class="wrapper">
+    <div class="wrapper">
         <h3>${this.title}</h3>
-        <h4>${this.presenter}</h4>
+        <h4>${this.timecode}</h4>
         <slot></slot>
-      </div>   -->
+        </div>  
       `;
   }
 }

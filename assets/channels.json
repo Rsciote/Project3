@@ -2,42 +2,53 @@
   "status": 200,
   "data": {
     "id": "123-123-123-123",
-    "title": "EdTechJokerTV",
-    "author": "EdTechJoker",
-    "description": "A series of talks to learn about JSON and web standard communications",
+    "title": "CollegeFootball",
+    "author": "College Football",
+    "description": "College Football Games",
     "license": "by-sa",
     "metadata": {},
     "items": [
       {
-        "id": "item-123-456-789",
+        "id": "123",
         "indent": 0,
-        "location": "hax-wp-killer.html",
-        "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
-        "title": "HAX: Wordpress Killer",
-        "description": "The future we need, not the future we have.",
+        "title": "The start",
+        "description": "Opening Kickoff", 
         "metadata": {
-          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
+          "source": "https://www.youtube.com/watch?v=rrc0Y3JMk6Q",
           "timecode": 0,
-          "author":"Bryan Ollendyke",
+          "author":"College Football",
           "created": 1697033522,
           "updated": 1697034021
         }
       },
       {
-        "id": "item-abc-456-789",
+        "id": "123",
         "indent": 0,
-        "location": "this-is-water.html",
-        "slug": "this-is-water",
         "order": 0,
         "parent": null,
-        "title": "This, is water",
-        "description": "What is water?",
+        "title": "First Drive of the Game",
+        "description": "First Drive", 
         "metadata": {
-          "source": "https://www.youtube.com/watch?v=eC7xzavzEKY",
-          "timecode": 45,
-          "author":"David Foster Wallace",
+          "source": "https://www.youtube.com/watch?v=rrc0Y3JMk6Q",
+          "timecode": 35,
+          "author":"College Football",
+          "created": 1697033522,
+          "updated": 1697034021
+        }
+      },
+      {
+        "id": "123",
+        "indent": 0,
+        "order": 0,
+        "parent": null,
+        "title": "Second Drive of the Game",
+        "description": "Second Drive", 
+        "metadata": {
+          "source": "https://www.youtube.com/watch?v=rrc0Y3JMk6Q",
+          "timecode": 51,
+          "author":"College Football",
           "created": 1697033522,
           "updated": 1697034021
         }
