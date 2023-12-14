@@ -18,6 +18,8 @@ export class TvChannel extends LitElement {
       title: { type: String },
       description:{type: String},
       timecode:{type: String},
+      active:{type: Boolean, reflect: true},
+     index:{type: Number}
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -26,11 +28,15 @@ export class TvChannel extends LitElement {
       :host {
         display: inline-flex;
       }
+      :host([active])
+      {
+        background-color: yellow;
+      }
       .wrapper {
         padding: 16px;
         background-color: #eeeeee;
         width: 350px;
-        height: 150px;
+        height: 350px;
         background-color: white;
         font-size: 18px;
         text-align: center;
@@ -45,7 +51,7 @@ export class TvChannel extends LitElement {
     <div class="wrapper">
         <h3>${this.title}</h3>
         <h4>${this.timecode}</h4>
-        <slot></slot>
+       
         </div>  
       `;
   }

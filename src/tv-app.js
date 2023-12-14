@@ -11,15 +11,11 @@ export class TvApp extends LitElement {
   // defaults
   constructor() {
     super();
-    this.name = '';
     this.source = new URL('../assets/channels.json', import.meta.url).href;
     this.listings = [];
-    this.sourceVideo = "https://www.youtube.com/watch?v=rrc0Y3JMk6Q";
-    this.currentInfo={
-      title: null,
-      timecode: null,
-      description: null,
-    }
+    this.sourceVideo = '';
+    this.activeIndex= 0;
+    
   }
 
   // convention I enjoy using to define the tag's name
@@ -29,10 +25,11 @@ export class TvApp extends LitElement {
   // LitElement convention so we update render() when values change
   static get properties() {
     return {
-      name: { type: String },
       source: { type: String },
+      sourceVideo:{type: String},
       listings: { type: Array },
-      currentInfo:{type: Object}
+      active:{type:Boolean, reflect: true},
+      activeIndex:{type: Number},
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -41,91 +38,152 @@ export class TvApp extends LitElement {
       css`
       :host {
         display: block;
-        margin: 32px;
-        padding: 16px;
+        margin: 64px;
+        
       }
-      .grid-container 
+      .lecture-grid 
       {
         display: grid;
         grid-template-columns: auto auto;
-        background-color: white;
-        padding: 10px;
-        gap: 10px;
+        background-color: grey;
+        padding: 16px;
+        gap: 16px;
       }
-      .grid-item1
+      .video
       {
-          height: 450px;
+          height: 400px;
           width: 600px;
-          border: 4px solid rgba(0, 0, 0, 0.8);
-          background-color: grey;
       }
-      .videoScreen{
-        height: 357px;
-          width: 700px; 
-      } 
-      .grid-item2
+      .lecture-slide-list
         {
-          height: 700px;
+          height: 850px;
           width: 400px;
-          border: 1px solid rgba(0, 0, 0, 0.8);
-          background-color: beige;
+          border: 4px grey;
+          background-color: black;
+          
         }
-        .scroll-container 
+        .scrollBar
         {
           width: 350px;
           height: 800px;
           overflow-y: auto;
-          padding-top: 5px;
-          padding-left: 25px;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center; 
         }
-        .descriptionSlides
+        .descriptionInfoBox
         {
-          width: 700px;
-          height: 250px;
+          width: 600px;
+          height: 100px;
           background-color: black;
-          border:  1px solid red;
         }
         .descriptionContent
         {
-          font-size: 16px;
+          padding-top: 10px;
+          font-size: 23px;
           color: white;
-
+          padding-left: 5px;
         }
-        
+        .prevButton
+        {
+          width: 75px;
+          height: 35px;
+          background-color: white;
+          font-size: 15px;
+          color: black;
+          float: left;
+        }
+        .nextButton
+        {
+          width: 75px;
+          height: 35px;
+          background-color: white;
+          font-size: 15px;
+          color: black;
+         float: right;
+        }
       `
     ];
   }
+        
+      
   // LitElement rendering template of your element
   render() {
     return html `
-     <div class="grid-container">
-    <div class="grid-item1"><video-player source= 
-    "https://www.youtube.com/watch?v=rrc0Y3JMk6Q"></video-player></div>
-    <div class="grid-item2">
-    </div>
+     
+    <div class="lecture-grid">
+      <div class="video">
+          <video-player source="${this.sourceVideo}"></video-player>
+          
+          <div class="descriptionInfoBox">
+            <h3 class="descriptionContent">${this.listings.length > 0 ? this.listings[this.activeIndex].description : ''}</h3>
       </div>
-      <div class="descriptionSlides">
-           <h3 class="descriptionContent"> "${this.currentInfo}"</h3>
-      </div>
+      
         </div>
-      <div class="grid-item2">
-        <div class="scroll-container"> 
+      <div class="lecture-slide-list">
+      <button class="prevButton" @click="${this.prevSlide}"> Previous</button> <button class="nextButton" @click="${this.nextSlide}"> Next </button>
+        <div class="scrollBar"> 
+        ${
+          this.listings.map(
+            (list,index) => html`
+            <tv-channel
+            ?active="${index === this.activeIndex}"
+            index = "${index}"
+            title= "${list.title}"
+            timecode= "${list.metadata.timecode}"
+            @click="${this.currentItem}"
+          >
+          </tv-channel>
+            `
+          )
+        }
+        </div>
+      </div>
+    </div>
+    ;
         
         
 
     `
     }
      
+    connectedCallback() {
+      this.changeSlide();
+      super.connectedCallback(); 
+     }
+     prevSlide()
+     {
+       this.activeIndex--;
+     }
+     nextSlide()
+     {
+       this.activeIndex++;
+     }
+
+    changeSlide()
+{
+  
+  setInterval(() => {
+    const currentTime = this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').media.currentTime;
+
+    if (this.activeIndex + 1 < this.listings.length &&
+        currentTime >= this.listings[this.activeIndex + 1].metadata.timecode) {
+      this.activeIndex++;
+     
+    }
+  }, 1000);
+}
+  
+    
+
     currentItem(e) {
     
       console.log(e.target);
+      this.activeIndex= e.target.index;
       this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play();
-      this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').seek(e.target.timecode);
     }
-     descriptionInfo()
-     {
-  
-     }
+     
     currentVidTime()
     {
         const timeNow = this.shadowRoot.querySelector('video-player').shadowRoot.querySelector("a11y-media-player").media.currentTime;
@@ -151,6 +209,11 @@ export class TvApp extends LitElement {
       if (propName === "source" && this[propName]) {
         this.updateSourceData(this[propName]);
       }
+      if(propName === "activeIndex"){
+        var currentLectureSlide = this.shadowRoot.querySelector("tv-channel[index = '" + this.activeIndex + "' ] ");
+        this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').seek(currentLectureSlide.timecode);
+      }
+    
     });
   }
 
@@ -160,16 +223,14 @@ export class TvApp extends LitElement {
       .then((responseData) => {
         if (responseData.status === 200 && responseData.data.items && responseData.data.items.length > 0) 
         {
-          this.listings= responseData.data.items.map(item => item.timecode);
-          console.log(this.listings);
-          this.updateVideoTime();
+          this.listings = [...responseData.data.items];
+          
         }
+        
       });
   }
   
-  updateVideoTime() {
-    
-  }
+  
 }
 
 // tell the browser about our tag and class it should run when it sees it
